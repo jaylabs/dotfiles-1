@@ -1,0 +1,60 @@
+---
+- name: install git
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+- name: create bin dir
+  action: file
+  args:
+    path: "{{ running_user_dir }}/bin"
+    state: directory
+- name: install git commands
+  action: copy
+  args:
+    src: "{{ item  }}"
+    dest: "{{ running_user_dir }}/bin/{{ item }}"
+    mode: 0755
+  with_items:
+    - git-alias
+    - git-up-changelog
+    - git-fetch-merge-request
+    - git-fetch-pull-request
+    - git-branch-clean-old
+    - git-branch-squash
+    - git-mr-squash
+    - git-pr-squash
+    - git-ignore-io
+    - git-line-summary
+    - git-log-linear
+    - git-log-tree
+    - git-nuke
+    - git-patch
+    - git-push-all
+    - git-publish
+    - git-rename-tag
+    - git-undo
+    - git-up
+    - git-get
+    - git-clear
+    - git-wtf
+- name: Copy gitconfig lib
+  action: copy
+  args:
+    src: gitconfig.lib
+    dest: "{{ running_user_dir }}/.gitconfig.lib"
+- name: Make sure gitoconfig exists
+  copy:
+    dest: "{{ running_user_dir }}/.gitconfig"
+    content: ""
+    force: no
+- name: Add gitconfig lib include
+  blockinfile:
+    dest: "{{ running_user_dir }}/.gitconfig"
+    block: |
+      [include]
+        path = ~/.gitconfig.lib

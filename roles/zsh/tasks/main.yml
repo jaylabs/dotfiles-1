@@ -1,0 +1,82 @@
+---
+- name: install zsh
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - zsh
+- name: Download antibody
+  action: get_url
+  args:
+    url: "https://github.com/getantibody/antibody/releases/download/v3.1.3/antibody_Linux_x86_64.tar.gz"
+    dest: "{{ ansible_pkgs_dir }}/antibody-3.1.3.tar.gz"
+- name: Extract antibody
+  action: unarchive
+  args:
+    src: "{{ ansible_pkgs_dir }}/antibody-3.1.3.tar.gz"
+    dest: "{{ running_user_dir }}/bin"
+    creates: "{{ running_user_dir }}/bin/antibody"
+    extra_opts:
+      - "antibody"
+- name: Set antibody executable permissions
+  action: file
+  args:
+    path: "{{ running_user_dir }}/bin/antibody"
+    mode: 0755
+- name: clean old zsh files
+  action: file
+  args:
+    state: absent
+    path: "{{ running_user_dir }}/.{{ item }}"
+  with_items:
+    - zlogin
+    - zlogout
+    - zpreztorc
+    - zprofile
+    - zshenv
+    - zprezto
+- name: create zsh config dirs
+  action: file
+  args:
+    state: directory
+    path: "{{ running_user_dir }}/.{{ item }}"
+  with_items:
+    - zsh
+    - zkbd
+- name: install main zsh config file
+  action: copy
+  args:
+    src: "zshrc"
+    dest: "{{ running_user_dir }}/.zshrc"
+- name: install zsh config files
+  action: copy
+  args:
+    src: "{{ item }}"
+    dest: "{{ running_user_dir }}/.zsh/{{ item }}"
+  with_items:
+    - completion.zsh
+    - config.zsh
+    - docker.zsh
+    - git.zsh
+    - golang.zsh
+    - less.zsh
+    - node.zsh
+    - path.zsh
+    - plugins
+    - python.zsh
+    - rpm.zsh
+    - ssh.zsh
+- name: install zkbd config files
+  action: copy
+  args:
+    src: "{{ item.src }}"
+    dest: "{{ running_user_dir }}/.zkbd/{{ item.dst }}"
+  with_items:
+    - src: zkbd.screen-256color
+      dst: screen-256color-:0
+    - src: zkbd.xterm-256color
+      dst: xterm-256color-:0

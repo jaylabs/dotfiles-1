@@ -1,0 +1,63 @@
+---
+- name: configure docker repo
+  action: copy
+  become: yes
+  become_user: root
+  args:
+    src: docker.repo
+    dest: /etc/yum.repos.d/docker.repo
+    owner: root
+    group: root
+    mode: 0644  
+- name: remove old docker packages
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{item}}"
+    state: absent
+  with_items:
+    - docker-engine
+    - docker-engine-selinux
+    - docker-common
+    - docker-selinux
+    - docker
+    - cockpit-docker
+- name: remove docker systemd service config
+  action: file
+  become: true
+  become_user: root
+  args:
+    path: /etc/systemd/system/docker.service
+    state: absent
+- name: install docker
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{item}}"
+    state: absent
+  with_items:
+    - docker
+- name: Download ctop
+  action: get_url
+  args:
+    url: "https://github.com/bcicen/ctop/releases/download/v0.6.1/ctop-0.6.1-linux-amd64"
+    dest: "{{ ansible_pkgs_dir }}/ctop-0.6.1"
+- name: Install ctop
+  action: copy
+  args:
+    src: "{{ ansible_pkgs_dir }}/ctop-0.6.1"
+    dest: "{{ running_user_dir }}/bin/ctop"
+    mode: 0755
+- name: Download docker-compose
+  action: get_url
+  args:
+    url: "https://github.com/docker/compose/releases/download/1.17.1/docker-compose-Linux-x86_64"
+    dest: "{{ ansible_pkgs_dir }}/docker-compose-1.17.1"
+- name: Install docker-compose
+  action: copy
+  args:
+    src: "{{ ansible_pkgs_dir }}/docker-compose-1.17.1"
+    dest: "{{ running_user_dir }}/bin/docker-compose"
+    mode: 0755

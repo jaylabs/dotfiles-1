@@ -1,0 +1,7 @@
+---
+editor_webdev_enable: yes
+editor_python_enable: yes
+editor_golang_enable: yes
+editor_rpmdev_enable: yes
+editor_latex_enable: yes
+editor_lua_enable: yes

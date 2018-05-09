@@ -1,0 +1,7 @@
+---
+running_user_id: "{{ ansible_user_id }}"
+running_user_dir: "{{ ansible_user_dir }}"
+provisioning_dir: "{{ lookup('env', 'PROVISIONING_DIR') }}"
+ansible_pkgs_dir: "{{ running_user_dir }}/.tmp/pkgs"
+git_config_name: "{{ lookup('env','GIT_CONFIG_NAME') }}"
+git_config_email: "{{ lookup('env','GIT_CONFIG_EMAIL') }}"

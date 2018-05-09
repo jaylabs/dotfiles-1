@@ -1,0 +1,53 @@
+---
+- name: configure yarn repo
+  action: copy
+  become: yes
+  become_user: root
+  args:
+    src: yarn.repo
+    dest: /etc/yum.repos.d/yarn.repo
+    owner: root
+    group: root
+    mode: 0644
+- name: install nodejs
+  action: package
+  become: yes
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nodejs
+    - npm
+    - yarn
+- name: create user global npm packages dir
+  action: file
+  args:
+    path: "{{ running_user_dir }}/.npm-packages"
+    state: directory
+- name: install npm config file
+  action: copy
+  args:
+    src: npmrc
+    dest: "{{ running_user_dir }}/.npmrc"
+- name: install node packages
+  action: npm
+  args:
+    global: yes
+    name: "{{ item }}"
+  with_items:
+    - tern
+    - eslint
+    - remark-lint
+    - remark-cli
+    - remark-preset-lint-recommended
+    - stylelint
+    - stylelint-config-standard
+    - js-yaml
+    - jsonlint
+    - dockerlint
+    - babel-cli
+    - babel-preset-es2015
+    - gulp
+    - tldr
+

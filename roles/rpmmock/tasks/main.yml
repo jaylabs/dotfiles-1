@@ -1,0 +1,24 @@
+---
+- name: Install mock package
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: mock
+    state: present
+- name: Configure mock group
+  action: group
+  become: true
+  become_user: root
+  args:
+    name: mock
+    state: present
+    system: yes
+- name: Add user to mock group
+  action: user
+  become: true
+  become_user: root
+  args:
+    name: "{{ running_user_id }}"
+    groups: mock
+    append: yes

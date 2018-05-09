@@ -1,0 +1,97 @@
+---
+- name: create temporary packages dir
+  action: file
+  args:
+    path: "{{ ansible_pkgs_dir }}"
+    state: directory
+- name: install build prereqs
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - slack
+    - terminator
+    - rpmdevtools
+    - redhat-rpm-config
+    - rpm-build
+    - clang
+    - mock
+    - imake
+    - autoconf
+    - pkgconfig
+    - findutils
+    - gcc-c++
+    - bzip2
+    - tar
+    - glibc-devel
+    - libffi-devel
+    - readline-devel
+    - ncurses-devel
+    - bzip2-devel
+    - zlib-devel
+    - xz-devel
+    - openssl-devel
+    - sqlite-devel
+    - libdb-devel
+    - db4-devel
+    - gmp-devel
+    - gdbm-devel
+    - libGL-devel
+    - libX11-devel
+    - bluez-libs-devel
+    - tcl-devel
+    - tix-devel
+    - tk-devel
+- name: install ansible prereqs
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python3-pip
+    - python-devel
+    - python3-devel
+    - libyaml-devel
+    - libffi-devel
+    - libgit2-devel
+    - openssl-devel
+    - libselinux-python
+    - cockpit
+- name: install misc prereqs
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - yp-tools
+    - google-roboto-fonts
+    - inotify-tools
+- name: set selinux to permissive
+  action: selinux
+  become: true
+  become_user: root
+  args:
+    policy: targeted
+    state: permissive
+- name: disable packagekit
+  action: file
+  become: true
+  become_user: root
+  args:
+    src: /dev/null
+    dest: /etc/systemd/system/packagekit.service
+    state: link
+- name: remove homebrew
+  action: file
+  args:
+    path: "{{ running_user_dir }}/.linuxbrew"
+    state: absent

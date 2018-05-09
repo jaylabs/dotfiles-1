@@ -1,0 +1,8 @@
+---
+- name: install shellcheck
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: ShellCheck
+    state: present

@@ -1,0 +1,52 @@
+---
+- name: install cli packages
+  action: package
+  become: true
+  become_user: root
+  args:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - caddy
+    - openssh
+    - tree
+    - nmap
+    - telnet
+    - tcpdump
+    - traceroute
+    - mtr
+    - nc
+    - iftop
+    - trafshow
+    - ncdu
+    - htop
+    - screen
+    - tmux
+    - siege
+    - ctags
+    - unrar
+    - youtube-dl
+    - the_silver_searcher
+- name: install root editorconfig file
+  action: copy
+  args:
+    src: editorconfig
+    dest: "{{ running_user_dir }}/.editorconfig"
+- name: Download hugo binary
+  action: get_url
+  args:
+    url: "{{ hugo_download_url }}"
+    dest: "{{ ansible_pkgs_dir }}/hugo-v{{hugo_version}}.tar.gz"
+- name: Extract hugo binary
+  action: unarchive
+  args:
+    src: "{{ ansible_pkgs_dir }}/hugo-v{{hugo_version}}.tar.gz"
+    dest: "{{ running_user_dir }}/bin"
+    creates: "{{ running_user_dir }}/bin/hugo"
+    extra_opts:
+      - "hugo"
+- name: Set hugo binary executable permissions
+  action: file
+  args:
+    path: "{{ running_user_dir }}/bin/hugo"
+    mode: 0755

@@ -1,0 +1,112 @@
+#!/bin/bash
+
+set -e
+
+PROVISIONING_DIR="$(pwd)"
+export PROVISIONING_DIR
+
+source ./script/lib
+function __setup {
+    local _provisioning_config
+    local _provisioning_dir
+    local do_reconfigure
+    # shellcheck disable=SC2154
+    _provisioning_dir="$PROVISIONING_DIR"
+    _provisioning_config=$(__get_provisioning_config "$_provisioning_dir")
+
+    if [ "$_provisioning_config" != "default" ]; then
+        echo "Provisioning already configured as [${_provisioning_config}]"
+        echo -n "Do you want to reconfigure? (yes|no): "
+        read do_reconfigure
+        [[ "$do_reconfigure" != "yes" ]] && return
+    fi
+
+    __get_info "$_provisioning_dir"
+    _provisioning_config="$PROVISIONING_CONFIG"
+
+    [[ "$_provisioning_config" == "" ]] && echo "exiting" && return
+    echo "$_provisioning_config" > "${_provisioning_dir}/.local"
+    __install_deps
+}
+
+function __run {
+    local _provisioning_config
+    local _provisioning_dir
+    _provisioning_dir="$PROVISIONING_DIR"
+    _provisioning_config=$(__get_provisioning_config "$_provisioning_dir")
+
+    __do_provisioning "$_provisioning_dir" "$_provisioning_config" yes
+}
+
+function __cron_run {
+    local _provisioning_config
+    local _provisioning_dir
+    local cron_force
+    _provisioning_dir="$PROVISIONING_DIR"
+    _provisioning_config=$(__get_provisioning_config "$_provisioning_dir")
+    cron_force="$1"
+
+    __checkout_master "$_provisioning_dir"
+    if [ "$cron_force" != "yes" ]; then
+        __check_git_update "$_provisioning_dir"
+        [[ $? -ne 0 ]] && exit
+    fi
+
+    if [ "$cron_force" == "yes" ]; then
+        __install_deps
+    fi
+
+    __do_provisioning "$_provisioning_dir" "$_provisioning_config" no \
+        > "/var/log/provisioning/${USER}.ansible.log" 2>&1
+}
+
+function __usage {
+    cat <<EOF
+provisioning.sh {setup,run,cron}
+    setup   Initial configuration
+    run     Execute the provisioning
+    cron    Used by the autoupdate cron, does a git checkout master
+            and check for updates before executing the provisioning
+
+            --force to ignore updates verification
+    help    show this help
+EOF
+}
+
+function __menu {
+    local option
+    local suboption
+    local cron_force
+    option="$1"
+
+    case $option in
+        run)
+            __run
+            ;;
+        cron)
+            suboption="$2"
+            case $suboption in
+                --force)
+                    cron_force=yes
+                    ;;
+                '')
+                    cron_force=no
+                    ;;
+                *)
+                    __usage
+                    exit
+                    ;;
+            esac
+            __cron_run "$cron_force"
+            ;;
+        setup)
+            __setup
+            ;;
+        *)
+            __usage
+            ;;
+    esac
+}
+
+
+__menu "$@"
