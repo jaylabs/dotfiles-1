@@ -81,6 +81,9 @@
     - python.zsh
     - rpm.zsh
     - ssh.zsh
+    - gcp.zsh
+    - k8s.zsh
+    - ansible.zsh
   tags: ["zsh", "copy-zshconfig-files"]
 
 - name: install zkbd config files
