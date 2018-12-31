@@ -1,0 +1,24 @@
+[connection]
+id=Azure
+type=vpn
+autoconnect=false
+permissions=user:{{ vpn_username }}:;
+
+[vpn]
+gateway={{ vpn_ip_address }}:4433
+otp-flags=0
+password-flags=2
+trusted-cert={{ vpn_cert }}
+user={{ vpn_username }}
+service-type=org.freedesktop.NetworkManager.fortisslvpn
+
+[ipv4]
+dns-search=
+method=auto
+never-default=true
+
+[ipv6]
+addr-gen-mode=stable-privacy
+dns-search=
+method=auto
+never-default=true

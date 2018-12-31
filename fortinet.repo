@@ -1,0 +1,7 @@
+[repo.fortinet.com]
+name=Fortinet CentOS 7 repository
+baseurl=https://repo.fortinet.com/repo/centos/7/os/x86_64
+enabled=1
+gpgkey=https://repo.fortinet.com/repo/centos/7/os/x86_64/RPM-GPG-KEY
+gpgcheck=1
+
