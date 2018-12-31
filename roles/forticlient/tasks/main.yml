@@ -1,25 +1,25 @@
 ---
-- name: configure fortinet repo
+- name: configure forticlient repo
   copy:
-    src: fortinet.repo
-    dest: /etc/yum.repos.d/fortinet.repo
+    src: forticlient.repo
+    dest: /etc/yum.repos.d/forticlient.repo
     owner: root
     group: root
     mode: 0644
-  tags: ["fortinet", "configure-fortinet-repo"]
+  tags: ["forticlient", "configure-forticlient-repo"]
 
-- name: install fortinet
+- name: install forticlient
   package:
-    name: "fortinet"
+    name: "forticlient"
     state: present
-  tags: ["fortinet", "install-fortinet"]
+  tags: ["forticlient", "install-forticlient"]
 
 - name: ensure variables to set up is defined
   set_fact:
     vpn_ip_address: "{{ lookup('env','VPN_IP_ADDRESS') }}"
     vpn_username: "{{ lookup('env','USER') }}"
     vpn_cert: "{{ lookup('env','VPN_CERT') }}"
-  tags: ["fortinet", "copy-azure-templete"]
+  tags: ["forticlient", "copy-azure-templete"]
 
 - name: copy azure vpn setting
   template:
@@ -33,4 +33,4 @@
     - vpn_cert | length > 0
     - vpn_ip_address | length > 0
     - vpn_username | length > 0
-  tags: ["fortinet", "copy-azure-templete"]
+  tags: ["forticlient", "copy-azure-templete"]
