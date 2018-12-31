@@ -4,9 +4,9 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-if [[ ! $(rpm -aq | grep ansible) ]] || [[ ! $(rpm -aq | grep python3-devel) ]]; then
+if [[ ! $(rpm -aq | grep ansible) ]] ||  [[ ! $(rpm -aq | grep python2-devel) ]] || [[ ! $(rpm -aq | grep python2-pip) ]]  ||  [[ ! $(rpm -aq | grep python3-devel) ]] || [[ ! $(rpm -aq | grep python3-pip) ]]; then
   echo -n "installing necessary packages to initialize the bootstrap"
-  sudo dnf install ansible python3-devel -y
+  sudo dnf install ansible python2-devel python2-pip python3-devel python3-pip -y
   pip install pipenv --user
 fi
 
