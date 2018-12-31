@@ -1,40 +1,40 @@
 ---
 - name: download vagrant
-  action: get_url
-  args:
+  get_url:
     url: "{{ vagrant_download_url }}"
     dest: "{{ ansible_pkgs_dir }}/{{ vagrant_pkg }}"
+    checksum: "sha256:{{ vagrant_checksum }}"
     timeout: 20
     validate_certs: no
+  register: _download_vagrant
+  until: _download_vagrant is succeeded
+  tags: ["vagrant", "install-vagrant"]
+
 - name: install vagrant
-  action: package
-  become: true
-  become_user: root
-  args:
+  package:
     name: "{{ ansible_pkgs_dir }}/{{ vagrant_pkg }}"
     state: present
+  tags: ["vagrant", "install-vagrant"]
+
 - name: install libvirt
-  action: package
-  become: true
-  become_user: root
-  args:
+  package:
     name: "{{ item }}"
     state: present
   with_items:
     - libvirt
     - qemu
-- name: add user libvirt polkit rules
-  action: copy
-  become: true
-  become_user: root
-  args:
+  tags: ["vagrant", "install-libvirt"]
+
+- name: copy virt-rules
+  copy:
     src: virt.rules
     dest: /etc/polkit-1/rules.d/10-virt.rules
+    mode: 0644
+  tags: ["vagrant", "copy-virt-rules"]
+
 - name: allow user access to libvirt
-  action: user
-  become: true
-  become_user: root
-  args:
+  user:
     name: "{{ running_user_id }}"
     groups: libvirt
-    append: yes
+    append: True
+  tags: ["vagrant", "allow-libvirt-user"]

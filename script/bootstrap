@@ -1,39 +1,17 @@
-#!/bin/sh
-
-# script/bootstrap: Resolve all dependencies that the application requires to
-#                   run.
+#!/bin/bash
 
 set -e
 
 cd "$(dirname "$0")/.."
 
-python_version=system
-
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-if [ -f ".python-version" ] && [ -z "$(pyenv version 2>/dev/null)" ]; then
-    python_version="$(cat .python-version)"
-    echo "==> Installing Python ${python_version}..."
-    pyenv install --skip-existing
-    echo "==> Activating Python ${python_version}..."
-    pyenv local "$python_version"
+if [[ ! $(rpm -aq | grep ansible) ]] || [[ ! $(rpm -aq | grep python3-devel) ]]; then
+  echo -n "installing necessary packages to initialize the bootstrap"
+  sudo dnf install ansible python3-devel -y
+  pip install pipenv --user
 fi
 
-if [ -f "requirements.txt" ]; then
-   echo "==> Installing pip dependencies..."
-   if [ ! -z "$python_version" ]; then
-       pip install -U -r requirements.txt
-   else
-       pip install --user -U -r requirements.txt
-   fi
+if [ ! -f "Pipfile.lock" ]; then
+  pipenv install --dev
 fi
 
-if [ -f "dev_requirements.txt" ]; then
-   echo "==> Installing pip development dependencies..."
-   if [ ! -z "$python_version" ]; then
-       pip install -U -r dev_requirements.txt
-   else
-       pip install --user -U -r dev_requirements.txt
-   fi
-fi
+pipenv shell

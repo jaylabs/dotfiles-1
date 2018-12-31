@@ -1,5 +1,0 @@
----
-atom_version: 1.26.1
-_atom:
-  pkg_file_name: atom_{{ atom_version }}.x86_64.rpm
-  download_url: https://github.com/atom/atom/releases/download/v{{ atom_version }}/atom.x86_64.rpm

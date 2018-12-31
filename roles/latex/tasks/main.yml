@@ -1,8 +1,0 @@
----
-- name: install texlive-full packages
-  action: package
-  become: true
-  become_user: root
-  args:
-    name: texlive-scheme-full
-    state: present

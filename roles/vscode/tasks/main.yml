@@ -1,60 +1,13 @@
 ---
-- name: add vscode repo
-  action: copy
-  become: true
-  become_user: root
-  args:
+- name: configure vscode repo
+  copy:
     src: vscode.repo
     dest: /etc/yum.repos.d/vscode.repo
     mode: 0644
+  tags: ["vscode", "configure-vscode-repo"]
+
 - name: install vscode
-  action: package
-  become: true
-  become_user: root
-  args:
+  package:
     name: code
     state: present
-- name: remove old vscode extensions
-  vscode: name={{ item }} state=absent
-  with_items:
-    - HookyQR.beautify
-    - ricard.PostCSS
-    - shinnn.stylelint
-    - ms-vscode.go
-- name: install base vscode extensions
-  vscode: name={{ item }} state=present
-  with_items:
-    - robertohuertasm.vscode-icons
-    - anseki.vscode-color
-    - donjayamanne.githistory
-    - EditorConfig.EditorConfig
-    - PeterJausovec.vscode-docker
-    - DavidAnson.vscode-markdownlint
-    - bungcip.better-toml
-    - timonwong.shellcheck
-- name: install web development vscode packages
-  vscode: name={{ item }} state=present
-  when: editor_webdev_enable
-  with_items:
-    - formulahendry.auto-close-tag
-    - esbenp.prettier-vscode
-    - dbaeumer.vscode-eslint
-    - octref.vetur
-    - glen-84.sass-lint
-- name: install python vscode packages
-  vscode: name={{ item }} state=present
-  when: editor_python_enable
-  with_items:
-    - ms-python.python
-    - wholroyd.jinja
-- name: install golang vscode packages
-  vscode: name={{ item }} state=present
-  when: editor_golang_enable
-  with_items:
-    - ms-vscode.go
-- name: install lua vscode packages
-  vscode: name={{ item }} state=present
-  when: editor_lua_enable
-  with_items:
-    - keyring.Lua
-    - jjkim.lua-luachecker
+  tags: ["vscode", "install-vscode"]

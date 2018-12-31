@@ -1,38 +1,38 @@
 ---
 - name: configure yarn repo
-  action: copy
-  become: yes
-  become_user: root
-  args:
+  copy:
     src: yarn.repo
     dest: /etc/yum.repos.d/yarn.repo
     owner: root
     group: root
     mode: 0644
+  tags: ["nodejs", "configure-yarn-repo"]
+
 - name: install nodejs
-  action: package
-  become: yes
-  become_user: root
-  args:
+  package:
     name: "{{ item }}"
     state: present
   with_items:
     - nodejs
     - npm
     - yarn
+  tags: ["nodejs", "install-nodejs-pkgs"]
+
 - name: create user global npm packages dir
-  action: file
-  args:
+  file:
     path: "{{ running_user_dir }}/.npm-packages"
     state: directory
+  tags: ["nodejs", "npm-pkg-dir"]
+
 - name: install npm config file
-  action: copy
-  args:
+  copy:
     src: npmrc
     dest: "{{ running_user_dir }}/.npmrc"
+    mode: 0644
+  tags: ["nodejs", "copy-npm-config"]
+
 - name: install node packages
-  action: npm
-  args:
+  npm:
     global: yes
     name: "{{ item }}"
   with_items:
@@ -50,4 +50,4 @@
     - babel-preset-es2015
     - gulp
     - tldr
-
+  tags: ["nodejs", "install-node-pkgs"]

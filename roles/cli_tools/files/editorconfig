@@ -12,10 +12,6 @@ indent_style = space
 [*.{conf,ini}]
 indent_size = 2
 
-# Asterisk
-[*.ael,extensions.conf]
-indent_size = 2
-
 # templates
 [*.{jinja2,j2,tmpl,template}]
 indent_size = 2

@@ -1,7 +1,6 @@
 ---
 - name: install graphic tools
   action: package
-  become: true
   become_user: root
   args:
     name: "{{ item }}"
@@ -9,19 +8,23 @@
   with_items:
     - inkscape
     - gimp
+  tags: ["graphics", "install-graphic-tools"]
+
 - name: create inkscape config dir
-  action: file
-  args:
+  file:
     path: "{{ running_user_dir }}/.config/inkscape"
     state: directory
+  tags: ["graphics", "inkscape-config-dir"]
+
 - name: create inkscape palettes dir
-  action: file
-  args:
+  file:
     path: "{{ running_user_dir }}/.config/inkscape/palettes"
     state: directory
+  tags: ["graphics", "inkscape-palettes-dir"]
+
 - name: install inkscape material palette
-  action: copy
-  args:
+  copy:
     src: "Material_Design.gpl"
     dest: "{{ running_user_dir }}/.config/inkscape/palettes/Material_Design.gpl"
     mode: 0644
+  tags: ["graphics", "inkscape-material-palette"]

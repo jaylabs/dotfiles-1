@@ -1,21 +1,18 @@
 ---
 - name: install git
-  action: package
-  become: true
-  become_user: root
-  args:
-    name: "{{ item }}"
+  package:
+    name: "git"
     state: present
-  with_items:
-    - git
+  tags: ["git", "install-git"]
+
 - name: create bin dir
-  action: file
-  args:
+  file:
     path: "{{ running_user_dir }}/bin"
     state: directory
+  tags: ["git", "create-bin-dir"]
+
 - name: install git commands
-  action: copy
-  args:
+  copy:
     src: "{{ item  }}"
     dest: "{{ running_user_dir }}/bin/{{ item }}"
     mode: 0755
@@ -42,19 +39,27 @@
     - git-get
     - git-clear
     - git-wtf
-- name: Copy gitconfig lib
-  action: copy
-  args:
+  tags: ["git", "install-git-cmd"]
+
+- name: copy gitconfig lib
+  copy:
     src: gitconfig.lib
     dest: "{{ running_user_dir }}/.gitconfig.lib"
-- name: Make sure gitoconfig exists
+    mode: 0644
+  tags: ["git", "copy-gitconfig"]
+
+- name: ensure gitconfig exists
   copy:
     dest: "{{ running_user_dir }}/.gitconfig"
     content: ""
     force: no
-- name: Add gitconfig lib include
+    mode: 0644
+  tags: ["git", "valid-gitconfig"]
+
+- name: add gitconfig lib include
   blockinfile:
     dest: "{{ running_user_dir }}/.gitconfig"
     block: |
       [include]
         path = ~/.gitconfig.lib
+  tags: ["git", "gitconfig-include"]

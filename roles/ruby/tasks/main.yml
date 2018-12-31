@@ -1,12 +1,10 @@
 ---
 - name: install ruby packages
-  action: package
-  become: true
-  become_user: root
-  args:
+  package:
     name: "{{ item }}"
     state: present
   with_items:
     - ruby
     - rubygems
     - ruby-devel
+  tags: ["ruby", "install-ruby-pkgs"]

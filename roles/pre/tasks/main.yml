@@ -1,97 +1,106 @@
 ---
 - name: create temporary packages dir
-  action: file
-  args:
+  file:
     path: "{{ ansible_pkgs_dir }}"
     state: directory
-- name: install build prereqs
-  action: package
-  become: true
-  become_user: root
-  args:
+  tags: ["pre", "create-tmp-dir"]
+
+- name: upgrade all packages
+  package:
+    name: "*"
+    state: latest
+  tags: ["pre", "upgrade"]
+
+- name: install packages
+  package:
     name: "{{ item }}"
     state: present
   with_items:
-    - git
-    - slack
-    - terminator
-    - rpmdevtools
-    - redhat-rpm-config
-    - rpm-build
-    - clang
-    - mock
-    - imake
+    - atom
     - autoconf
-    - pkgconfig
+    - bluez-libs-devel
+    - bzip2
+    - bzip2-devel
+    - clang
+    - cockpit
+    - db4-devel
     - findutils
     - gcc-c++
-    - bzip2
-    - tar
-    - glibc-devel
-    - libffi-devel
-    - readline-devel
-    - ncurses-devel
-    - bzip2-devel
-    - zlib-devel
-    - xz-devel
-    - openssl-devel
-    - sqlite-devel
-    - libdb-devel
-    - db4-devel
-    - gmp-devel
     - gdbm-devel
-    - libGL-devel
-    - libX11-devel
-    - bluez-libs-devel
-    - tcl-devel
-    - tix-devel
-    - tk-devel
-- name: install ansible prereqs
-  action: package
-  become: true
-  become_user: root
-  args:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - python-pip
-    - python3-pip
-    - python-devel
-    - python3-devel
-    - libyaml-devel
+    - git
+    - glibc-devel
+    - gmp-devel
+    - google-roboto-fonts
+    - imake
+    - inotify-tools
+    - libdb-devel
+    - libffi-devel
     - libffi-devel
     - libgit2-devel
-    - openssl-devel
+    - libGL-devel
     - libselinux-python
-    - cockpit
-- name: install misc prereqs
-  action: package
-  become: true
-  become_user: root
-  args:
-    name: "{{ item }}"
-    state: present
-  with_items:
+    - libX11-devel
+    - libyaml-devel
+    - mock
+    - ncurses-devel
+    - openssl-devel
+    - openssl-devel
+    - pkgconfig
+    - python3-devel
+    - python3-pip
+    - python-devel
+    - python-pip
+    - readline-devel
+    - redhat-rpm-config
+    - rpm-build
+    - rpmdevtools
+    - ShellCheck
+    - slack
+    - sqlite-devel
+    - tar
+    - tcl-devel
+    - terminator
+    - tig
+    - tix-devel
+    - tk-devel
+    - xz-devel
     - yp-tools
-    - google-roboto-fonts
-    - inotify-tools
-- name: set selinux to permissive
-  action: selinux
-  become: true
-  become_user: root
-  args:
+    - zlib-devel
+  tags: ["pre", "install-pkgs"]
+
+- name: set up selinux to permissive
+  selinux:
     policy: targeted
     state: permissive
+  tags: ["pre", "selinux"]
+
 - name: disable packagekit
-  action: file
-  become: true
-  become_user: root
-  args:
+  file:
     src: /dev/null
     dest: /etc/systemd/system/packagekit.service
     state: link
-- name: remove homebrew
-  action: file
-  args:
-    path: "{{ running_user_dir }}/.linuxbrew"
-    state: absent
+  tags: ["pre", "disable-packagekit"]
+
+- name: download rpmfusion free repo
+  get_url:
+    url: "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    dest: "{{ ansible_pkgs_dir }}/rpmfusion-free-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
+  tags: ["rpmfusion", "download-free-repo"]
+
+- name: install rpmfusion free repo
+  package:
+    name: "{{ ansible_pkgs_dir }}/rpmfusion-free-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
+    state: present
+  tags: ["rpmfusion", "install-free-repo"]
+
+- name: download rpmfusion non-free repo
+  get_url:
+    url: "http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    dest: "{{ ansible_pkgs_dir }}/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
+  tags: ["rpmfusion", "download-non-free-repo"]
+
+- name: install rpmfusion non-free repo
+  package:
+    name: "{{ ansible_pkgs_dir }}/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
+    state: present
+  tags: ["rpmfusion", "download-non-free-repo"]

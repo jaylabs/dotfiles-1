@@ -1,10 +1,8 @@
 ---
 - name: install golang packages
-  action: package
-  become: true
-  become_user: root
-  args:
-    name: "{{ item }}"
+  package:
+    name: "golang"
     state: present
   with_items:
     - golang
+  tags: ["golang", "install-golang"]

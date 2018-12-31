@@ -1,12 +1,11 @@
-```sh
-git config --global user.name "Exemplo Nome Completo"
-git config --global user.email exemplo@email.com.br
-```
+# My Dotfiles
 
-```sh
-./start.sh setup
-```
+to initialize my dotfiles you have to execute bootstrap script:
 
-```sh
-./start.sh run
-```
+`./script/bootstrap`
+
+This dotfiles it is supported by Fedora 29 operation system.
+
+withing virtualenv activated, to run playbook:
+
+`pipenv run ansible-playbook playbooks/main.yml`
