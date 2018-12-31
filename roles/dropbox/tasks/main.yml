@@ -1,0 +1,15 @@
+---
+- name: configure dropbox repo
+  copy:
+    src: dropbox.repo
+    dest: /etc/yum.repos.d/dropbox.repo
+    owner: root
+    group: root
+    mode: 0644
+  tags: ["dropbox", "configure-dropbox-repo"]
+
+- name: install dropbox
+  package:
+    name: "dropbox"
+    state: present
+  tags: ["dropbox", "install-dropbox"]
