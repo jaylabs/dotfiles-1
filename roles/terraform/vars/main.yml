@@ -1,0 +1,4 @@
+---
+terraform_version: 0.11.11
+terraform_download_url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
+terraform_checksum: 94504f4a67bad612b5c8e3a4b7ce6ca2772b3c1559630dfd71e9c519e3d6149c.

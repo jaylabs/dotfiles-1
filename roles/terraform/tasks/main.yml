@@ -1,0 +1,24 @@
+---
+- name: download terraform
+  action: get_url
+  args:
+    url: "{{ terraform_download_url }}"
+    dest: "{{ ansible_pkgs_dir }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+    checksum: "sha256:{{ terraform_checksum }}"
+  register: _download_terraform
+  until: _download_terraform is succeeded
+  tags: ["terraform", "download-terraform"]
+
+- name: unarchive terraform package
+  unarchive:
+    src: "{{ ansible_pkgs_dir }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+    dest: "{{ running_user_dir }}/bin"
+    creates: "{{ running_user_dir }}/bin/terraform"
+    remote_src: True
+  tags: ["terraform", "unarchive-terraform"]
+
+- name: set up terraform executable permissions
+  file:
+    path: "{{ running_user_dir }}/bin/terraform"
+    mode: 0755
+  tags: ["terraform", "terraform-permissions"]
