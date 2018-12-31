@@ -11,7 +11,7 @@
 - name: install fortinet
   package:
     name: "fortinet"
-    state: absent
+    state: present
   tags: ["fortinet", "install-fortinet"]
 
 - name: ensure variables to set up is defined
