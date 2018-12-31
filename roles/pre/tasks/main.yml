@@ -16,7 +16,6 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - atom
     - autoconf
     - bluez-libs-devel
     - bzip2
@@ -55,7 +54,6 @@
     - rpm-build
     - rpmdevtools
     - ShellCheck
-    - slack
     - sqlite-devel
     - tar
     - tcl-devel
