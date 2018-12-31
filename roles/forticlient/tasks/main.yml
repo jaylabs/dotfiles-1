@@ -10,8 +10,12 @@
 
 - name: install forticlient
   package:
-    name: "forticlient"
+    name: "{{ item }}"
     state: present
+  with_items:
+    - "forticlient"
+    - "NetworkManager-fortisslvpn"
+    - "NetworkManager-fortisslvpn-gnome"
   tags: ["forticlient", "install-forticlient"]
 
 - name: ensure variables to set up is defined
