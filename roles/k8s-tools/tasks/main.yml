@@ -1,0 +1,47 @@
+---
+- name: configure kuberentes repo
+  copy:
+    src: kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
+    owner: root
+    group: root
+    mode: 0644
+    force: True
+  tags: ["k8s-tools", "configure-k8s-repo"]
+
+- name: install kubectl tool
+  package:
+    name: "kubectl"
+    state: present
+  tags: ["k8s-tools", "install-kubectl"]
+
+- name: clone kubens/kubectx repository
+  git:
+    repo: https://github.com/ahmetb/kubectx.git
+    dest: "{{ ansible_pkgs_dir }}/kubectx"
+    clone: True
+  tags: ["k8s-tools", "git-kubectx"]
+
+- name: install kubens/kubectx tools
+  copy:
+    src: "{{ ansible_pkgs_dir }}/kubectx/{{ item  }}"
+    dest: "{{ running_user_dir }}/bin/{{ item }}"
+    mode: 0755
+  with_items:
+    - kubectx
+    - kubens
+  tags: ["k8s-tools", "git-kubectx"]
+
+- name: clone kubedecode repository
+  git:
+    repo: https://github.com/mveritym/kubedecode.git
+    dest: "{{ ansible_pkgs_dir }}/kubedecode"
+    clone: True
+  tags: ["k8s-tools", "git-kubedecode"]
+
+- name: install kubedecode tool
+  copy:
+    src: "{{ ansible_pkgs_dir }}/kubedecode/bin/kubedecode"
+    dest: "{{ running_user_dir }}/bin/kubedecode"
+    mode: 0755
+  tags: ["k8s-tools", "git-kubedecode"]

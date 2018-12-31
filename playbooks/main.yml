@@ -21,3 +21,4 @@
     - chrome
     - fortinet
     - terraform
+    - k8s-tools
