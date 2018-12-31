@@ -11,5 +11,5 @@
 - name: install google-chrome
   package:
     name: "google-chrome"
-    state: absent
+    state: present
   tags: ["google-chrome", "install-google-chrome"]
