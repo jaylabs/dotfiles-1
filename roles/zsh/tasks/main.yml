@@ -7,7 +7,7 @@
   tags: ["zsh", "install-zsh"]
 
 - name: configure zsh to major shell
-  command: "chsh -s /usr/bin/zsh"
+  command: "usermod --shell /usr/bin/zsh $USER"
   tags: ["zsh", "install-zsh"]
 
 - name: Download antibody
