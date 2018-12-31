@@ -8,7 +8,7 @@
     validate_certs: no
   register: _download_vagrant
   until: _download_vagrant is succeeded
-  tags: ["vagrant", "install-vagrant"]
+  tags: ["vagrant", "download-vagrant"]
 
 - name: install vagrant
   package:

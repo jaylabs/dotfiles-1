@@ -35,7 +35,7 @@
 
 - name: download ctop
   get_url:
-    url: "{{ ctop_url }}"
+    url: "{{ ctop_download_url }}"
     dest: "{{ ansible_pkgs_dir }}/ctop-{{ ctop_version }}"
     checksum: "sha256:{{ ctop_checksum }}"
   register: _ctop_binary
@@ -51,9 +51,9 @@
 
 - name: download docker-compose
   get_url:
-    url: ""
+    url: "{{ docker_compose_download_url }}"
     dest: "{{ ansible_pkgs_dir }}/docker-compose-{{ docker_compose_version }}"
-    checksum: "sha254:{{ docker_compose_checksum }}"
+    checksum: "sha256:{{ docker_compose_checksum }}"
   tags: ["docker", "download-docker-compose"]
 
 - name: define permissions and move docker-compose to local bin directory
