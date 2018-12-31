@@ -1,0 +1,6 @@
+---
+- name: install atom package
+  package:
+    name: "https://atom-installer.github.com/v1.33.1/atom.x86_64.rpm"
+    state: present
+  tags: ["install-atom"]
