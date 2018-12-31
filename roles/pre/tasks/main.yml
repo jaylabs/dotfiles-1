@@ -61,6 +61,7 @@
     - tig
     - tix-devel
     - tk-devel
+    - util-linux-user
     - xz-devel
     - yp-tools
     - zlib-devel
