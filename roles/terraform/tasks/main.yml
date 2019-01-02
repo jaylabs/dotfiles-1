@@ -1,7 +1,6 @@
 ---
 - name: download terraform
-  action: get_url
-  args:
+  get_url:
     url: "{{ terraform_download_url }}"
     dest: "{{ ansible_pkgs_dir }}/terraform_{{ terraform_version }}_linux_amd64.zip"
     checksum: "sha256:{{ terraform_checksum }}"
