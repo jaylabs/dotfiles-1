@@ -52,6 +52,7 @@
     - python-pip
     - readline-devel
     - redhat-rpm-config
+    - remmina
     - rpm-build
     - rpmdevtools
     - ShellCheck
@@ -66,7 +67,7 @@
     - xz-devel
     - yp-tools
     - zlib-devel
-  tags: ["pre", "install-pkgs"]
+  tags: ["pre", "pre-install-pkgs"]
 
 - name: set up selinux to permissive
   selinux:
