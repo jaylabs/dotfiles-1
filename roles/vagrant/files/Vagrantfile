@@ -8,14 +8,6 @@ if File.directory?('.git')
     FileUtils.mkpath 'public'
 end
 
-pub_iface = a = Socket.getifaddrs.select{|x|
-  x.addr.ipv4? and
-  !x.addr.ipv4_loopback? and
-  !x.addr.ipv4_multicast? and
-  !x.name.start_with?('docker') and
-  !x.name.start_with?('virbr')
-}[0].name
-
 def make_pub_ipaddr()
     pub_addr = Socket.ip_address_list.detect{|intf| intf.ipv4? and !intf.ipv4_loopback? and !intf.ipv4_multicast?}
     pub_addr_range = pub_addr.ip_address.split('.')[0,3].join('.')
@@ -39,7 +31,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         centos.vm.hostname = "vm-centos7"
         pub_addr = make_pub_ipaddr()
-        centos.vm.network :public_network, ip: pub_addr, bridge: pub_iface, dev: pub_iface, mode: "bridge"
         centos.vm.network :private_network, ip: "192.168.200.10"
 
         centos.vm.provider :libvirt do |libvirt|
