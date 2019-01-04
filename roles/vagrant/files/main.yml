@@ -19,6 +19,4 @@
         - nmap
         - curl
         - git
-        - python3-devel
-        - python36
-        - python3-pip
+        - vim
