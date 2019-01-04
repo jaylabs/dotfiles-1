@@ -4,9 +4,11 @@ alias k="kubectl"
 alias kx="kubectx"
 alias kn="kubens"
 
+alias kfails='kubectl get po -owide --all-namespaces | grep "0/" | tee /dev/tty | wc -l'
+
 alias ki="kubectl-inspect "
 
-alias ked="kubectl edit " 
+alias ked="EDITOR=vim kubectl edit " 
 
 alias kexec="kubectl exec -it"
 
