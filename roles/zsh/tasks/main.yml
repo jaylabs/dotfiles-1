@@ -85,6 +85,7 @@
     - k8s.zsh
     - ansible.zsh
     - kubectl.zsh
+    - vagrant.zsh
   tags: ["zsh", "copy-zshconfig-files"]
 
 - name: install zkbd config files
