@@ -82,6 +82,14 @@
     state: present
   tags: ["vagrant", "nfs"]
 
+- name: setup nfsd
+  lineinfile:
+    path: /etc/nfsd.conf
+    line: 'udp=y'
+    insertbefore: '^#[nfsd]'
+    firstmatch: true
+  tags: ["vagrant", "setup-nfs"]
+
 - name: ensure systemd nfs-server is enabled on boot and start service
   systemd:
     daemon_reload: true
