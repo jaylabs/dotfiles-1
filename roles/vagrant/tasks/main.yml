@@ -22,8 +22,13 @@
     state: present
   with_items:
     - libvirt
+    - libvirt-devel
     - qemu
   tags: ["vagrant", "install-libvirt"]
+
+- name: install vagrant libvirt plugin
+  shell: "CONFIGURE_ARGS='with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib' vagrant plugin install vagrant-libvirt"
+  tags: ["vagrant", "install-libvirt-plugin"]
 
 - name: copy virt-rules
   copy:
