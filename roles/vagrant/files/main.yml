@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: True
+  remote_user: vagrant
+
+  tasks:
+    
+    - name: update packages
+      package:
+        name: "*"
+        state: latest
+    
+    - name: install initial packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - wget
+        - nmap
+        - curl
+        - git
+        - python3-devel
+        - python36
+        - python3-pip
