@@ -4,6 +4,7 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - awscli
     - caddy
     - openssh
     - tree
