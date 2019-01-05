@@ -35,3 +35,20 @@
     dest: "{{ running_user_dir }}/.editorconfig"
     mode: 0644
   tags: ["cli_tools"]
+
+- name: add azure cli repositoriy
+  yum_repository:
+    name: azure-cli
+    file: azure-cli
+    description: Azure CLI
+    enabled: True
+    baseurl: https://packages.microsoft.com/yumrepos/azure-cli
+    gpgcheck: True
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+  tags: ["cli_tools", "azure-cli"]
+
+- name: install azure cli package
+  package:
+    name: azure-cli
+    state: present
+  tags: ["cli_tools", "azure-cli"]
