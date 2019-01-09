@@ -2,10 +2,10 @@
 
 To initialize my dotfiles you have to execute bootstrap script:
 
-`./script/bootstrap`
+`make bootstrap`
 
 Run playbook:
 
-`pipenv run ansible-playbook playbooks/main.yml`
+`make run`
 
 Operation system: `Fedora`
