@@ -69,6 +69,7 @@
     src: "{{ item }}"
     dest: "{{ running_user_dir }}/.zsh/{{ item }}"
   with_items:
+    - custom.zsh
     - completion.zsh
     - config.zsh
     - docker.zsh

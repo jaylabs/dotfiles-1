@@ -26,9 +26,3 @@ if [ $(date +'%j') != $updated_at ]; then
 else
   compinit -C -i
 fi
-
-if [ -e ~/.customrc.sh ]; then
-  source ~/.customrc.sh
-else
-  touch ~/.customrc.sh
-fi
