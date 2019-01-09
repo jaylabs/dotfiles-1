@@ -10,12 +10,17 @@ if [[ ! $(rpm -aq | grep ansible) ]] ||  \
    [[ ! $(rpm -aq | grep python3-devel) ]] || \
    [[ ! $(rpm -aq | grep python3-pip) ]]; then
   echo -n "installing necessary packages to initialize the bootstrap"
-  sudo dnf install ansible python2-devel python2-pip python36 python3-devel python3-pip -y
+  sudo dnf install \
+    ansible \
+    python2-devel \
+    python2-pip \
+    python36 \
+    python3-devel \
+    python3-pip \
+    -y
   pip install pipenv --user
 fi
 
 if [ ! -f "Pipfile.lock" ]; then
   pipenv install --dev
 fi
-
-pipenv shell
