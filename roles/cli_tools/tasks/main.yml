@@ -27,6 +27,7 @@
     - the_silver_searcher
     - Zim
     - terminator
+    - tilix
   tags: ["cli_tools"]
 
 - name: install root editorconfig file
