@@ -28,6 +28,7 @@
     - Zim
     - terminator
     - tilix
+    - fzf
   tags: ["cli_tools"]
 
 - name: install root editorconfig file
