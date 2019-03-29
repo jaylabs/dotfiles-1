@@ -22,6 +22,4 @@
     - forticlient
     - terraform
     - k8s-tools
-    - slack
-    - atom
     - virtualbox
