@@ -22,6 +22,7 @@
 
 - name: unarchive antibody package
   unarchive:
+    remote_src: true
     src: "{{ ansible_pkgs_dir }}/antibody-{{ antibody_version }}.tar.gz"
     dest: "{{ running_user_dir }}/bin"
     creates: "{{ running_user_dir }}/bin/antibody"
