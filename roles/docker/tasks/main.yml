@@ -47,6 +47,7 @@
     src: "{{ ansible_pkgs_dir }}/ctop-{{ ctop_version }}"
     dest: "{{ running_user_dir }}/bin/ctop"
     mode: 0755
+    remote_src: true
   tags: ["docker", "install-ctop"]
 
 - name: download docker-compose
@@ -58,6 +59,7 @@
 
 - name: define permissions and move docker-compose to local bin directory
   copy:
+    remote_src: true
     src: "{{ ansible_pkgs_dir }}/docker-compose-{{ docker_compose_version }}"
     dest: "{{ running_user_dir }}/bin/docker-compose"
     mode: 0755
