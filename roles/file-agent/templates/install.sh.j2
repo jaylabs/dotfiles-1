@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -ex
+
+java -jar {{ file_agent_install_dir }}/FAInstall.jar -f installer.properties >> {{ file_agent_install_dir }}/{{ file_agent_package }}.log

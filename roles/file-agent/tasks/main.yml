@@ -1,0 +1,82 @@
+---
+- name: install dependencies
+  dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - java-openjdk
+    - java-1.8.0-openjdk
+    - java-openjdk-devel
+    - java-1.8.0-openjdk-devel
+    - javapackages-filesystem
+    - java-1.8.0-openjdk-headless
+    - abrt-java-connector
+    - java-11-openjdk-headless
+    - tzdata-java
+    - java-openjdk-headless
+
+- name: create opt directory file-agent
+  file:
+    path: "{{ file_agent_install_dir }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    state: directory
+
+- name: check file-agent package exist
+  stat:
+    path: "{{ file_agent_install_dir }}/{{ file_agent_package }}"
+  register: file_agent_pkg
+  changed_when: False
+
+- name: download file-agent
+  get_url:
+    url: "{{ file_agent_url }}"
+    dest: "{{ file_agent_install_dir }}/{{ file_agent_package }}"
+    checksum: "sha256:{{ file_agent_checksum }}"
+  register: _download_binary
+  until: _download_binary is succeeded
+  when: file_agent_pkg.stat.exists == False
+
+- name: unarchive file-agent
+  shell: unzip "{{ file_agent_install_dir }}/{{ file_agent_package }}"
+  args:
+    chdir: "{{ file_agent_install_dir }}"
+    creates: "{{ file_agent_install_dir }}/FAInstall.jar"
+
+- name: define permissions
+  file:
+    path: "{{ file_agent_install_dir }}/FAInstall.jar"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0775
+
+- name: copy file-agent settings
+  template:
+    src: "installer.properties.j2"
+    dest: "{{ file_agent_install_dir }}/installer.properties"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0644
+
+- name: copy file-agent script install
+  template:
+    src: "install.sh.j2"
+    dest: "{{ file_agent_install_dir }}/install.sh"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0775
+
+- name: install file_agent silent mode
+  command: "./install.sh"
+  args:
+    chdir: "{{ file_agent_install_dir }}"
+    creates: "{{ file_agent_install_dir }}/cdfa"
+  become: false
+
+- name: copy shortcut in launcher
+  template:
+    src: "file-agent.desktop.j2"
+    dest: "/home/{{ username }}/.local/share/applications/file-agent.desktop"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0644
