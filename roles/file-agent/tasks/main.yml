@@ -1,6 +1,6 @@
 ---
 - name: install dependencies
-  dnf:
+  package:
     name: "{{ item }}"
     state: present
   loop:
