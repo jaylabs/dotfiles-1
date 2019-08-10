@@ -6,10 +6,8 @@
     owner: root
     group: root
     mode: 0644
-  tags: ["google-chrome", "configure-google-chrome-repo"]
 
 - name: install google-chrome
   package:
-    name: "google-chrome"
+    name: google-chrome
     state: present
-  tags: ["google-chrome", "install-google-chrome"]

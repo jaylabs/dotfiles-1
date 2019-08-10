@@ -1,5 +1,5 @@
 ---
-vagrant_version: 2.2.2
+vagrant_version: 2.2.5
 vagrant_download_url: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.rpm
 vagrant_pkg: vagrant_{{ vagrant_version }}.x86_64.rpm
 vagrant_checksum: 1826ff2220951766b65d549f3e6e38f1eb07ff0b4c66197582b1ce62f9104035.

@@ -6,24 +6,22 @@
     owner: root
     group: root
     mode: 0644
-  tags: ["forticlient", "configure-forticlient-repo"]
 
 - name: install forticlient
   package:
     name: "{{ item }}"
     state: present
-  with_items:
-    - "forticlient"
-    - "NetworkManager-fortisslvpn"
-    - "NetworkManager-fortisslvpn-gnome"
-  tags: ["forticlient", "install-forticlient"]
+  loop:
+    - forticlient
+    - NetworkManager-fortisslvpn
+    - NetworkManager-fortisslvpn-gnome
 
 - name: ensure variables to set up is defined
   set_fact:
     vpn_ip_address: "{{ lookup('env','VPN_IP_ADDRESS') }}"
     vpn_username: "{{ lookup('env','USER') }}"
     vpn_cert: "{{ lookup('env','VPN_CERT') }}"
-  tags: ["forticlient", "copy-azure-templete"]
+  when: install_forticlient is True
 
 - name: copy azure vpn setting
   template:
@@ -37,4 +35,3 @@
     - vpn_cert | length > 0
     - vpn_ip_address | length > 0
     - vpn_username | length > 0
-  tags: ["forticlient", "copy-azure-templete"]

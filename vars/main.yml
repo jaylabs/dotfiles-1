@@ -1,5 +1,0 @@
----
-running_user_id: "{{ ansible_user_id }}"
-running_user_dir: "{{ ansible_user_dir }}"
-ansible_pkgs_dir: "{{ running_user_dir }}/.tmp/pkgs"
-editor_rpmdev_enable: True

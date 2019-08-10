@@ -1,60 +1,50 @@
 ---
-- name: install git
-  package:
-    name: "git"
-    state: present
-  tags: ["git", "install-git"]
-
 - name: create bin dir
   file:
     path: "{{ running_user_dir }}/bin"
     state: directory
-  tags: ["git", "create-bin-dir"]
 
 - name: install git commands
   copy:
     src: "{{ item  }}"
     dest: "{{ running_user_dir }}/bin/{{ item }}"
     mode: 0755
-  with_items:
+  loop:
     - git-alias
-    - git-up-changelog
-    - git-fetch-merge-request
-    - git-fetch-pull-request
     - git-branch-clean-old
     - git-branch-squash
-    - git-mr-squash
-    - git-pr-squash
+    - git-clear
+    - git-fetch-merge-request
+    - git-fetch-pull-request
+    - git-get
     - git-ignore-io
     - git-line-summary
     - git-log-linear
     - git-log-tree
+    - git-mr-squash
     - git-nuke
     - git-patch
-    - git-push-all
+    - git-pr-squash
     - git-publish
+    - git-push-all
     - git-rename-tag
     - git-undo
     - git-up
-    - git-get
-    - git-clear
+    - git-up-changelog
     - git-wtf
-  tags: ["git", "install-git-cmd"]
 
 - name: copy gitconfig lib
   copy:
     src: gitconfig.lib
     dest: "{{ running_user_dir }}/.gitconfig.lib"
     mode: 0644
-  tags: ["git", "copy-gitconfig"]
 
 - name: ensure gitconfig exists
   copy:
     dest: "{{ running_user_dir }}/.gitconfig"
     content: ""
-    force: no
+    force: yes
     mode: 0644
-  tags: ["git", "valid-gitconfig"]
 
 - name: add gitconfig lib include
   blockinfile:
@@ -62,4 +52,3 @@
     block: |
       [include]
         path = ~/.gitconfig.lib
-  tags: ["git", "gitconfig-include"]

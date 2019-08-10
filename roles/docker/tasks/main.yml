@@ -6,32 +6,28 @@
     owner: root
     group: root
     mode: 0644
-  tags: ["docker", "configure-docker-repo"]
 
 - name: remove old docker packages
   package:
     name: "{{ item }}"
     state: absent
-  with_items:
+  loop:
+    - cockpit-docker
+    - docker
+    - docker-common
     - docker-engine
     - docker-engine-selinux
-    - docker-common
     - docker-selinux
-    - docker
-    - cockpit-docker
-  tags: ["docker", "remove-old-docker"]
 
 - name: remove docker systemd service config
   file:
     path: /etc/systemd/system/docker.service
     state: absent
-  tags: ["docker", "remove-docker"]
 
-- name: install docker
+- name: remove docker
   package:
-    name: "docker"
+    name: docker
     state: absent
-  tags: ["docker", "install-docker"]
 
 - name: download ctop
   get_url:
@@ -40,7 +36,6 @@
     checksum: "sha256:{{ ctop_checksum }}"
   register: _ctop_binary
   until: _ctop_binary is succeeded
-  tags: ["docker", "download-ctop"]
 
 - name: define permissions and move ctop to local bin directory
   copy:
@@ -48,19 +43,18 @@
     dest: "{{ running_user_dir }}/bin/ctop"
     mode: 0755
     remote_src: true
-  tags: ["docker", "install-ctop"]
 
 - name: download docker-compose
   get_url:
     url: "{{ docker_compose_download_url }}"
     dest: "{{ ansible_pkgs_dir }}/docker-compose-{{ docker_compose_version }}"
     checksum: "sha256:{{ docker_compose_checksum }}"
-  tags: ["docker", "download-docker-compose"]
+  register: docker_compose_binary
+  until: docker_compose_binary is succeeded
 
 - name: define permissions and move docker-compose to local bin directory
   copy:
-    remote_src: true
     src: "{{ ansible_pkgs_dir }}/docker-compose-{{ docker_compose_version }}"
     dest: "{{ running_user_dir }}/bin/docker-compose"
     mode: 0755
-  tags: ["docker", "install-docker-compose"]
+    remote_src: true

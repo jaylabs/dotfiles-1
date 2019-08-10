@@ -1,15 +1,8 @@
 ---
-- name: create temporary packages dir
-  file:
-    path: "{{ ansible_pkgs_dir }}"
-    state: directory
-  tags: ["pre", "create-tmp-dir"]
-
 - name: upgrade all packages
   package:
     name: "*"
     state: latest
-  tags: ["pre", "upgrade"]
 
 - name: install packages
   package:
@@ -27,6 +20,7 @@
     - gcc-c++
     - gdbm-devel
     - git
+    - golang
     - glibc-devel
     - gmp-devel
     - google-roboto-fonts
@@ -68,41 +62,34 @@
     - xz-devel
     - yp-tools
     - zlib-devel
-  tags: ["pre", "pre-install-pkgs"]
 
 - name: set up selinux to permissive
   selinux:
     policy: targeted
     state: permissive
-  tags: ["pre", "selinux"]
 
 - name: disable packagekit
   file:
     src: /dev/null
     dest: /etc/systemd/system/packagekit.service
     state: link
-  tags: ["pre", "disable-packagekit"]
 
 - name: download rpmfusion free repo
   get_url:
     url: "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     dest: "{{ ansible_pkgs_dir }}/rpmfusion-free-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
-  tags: ["rpmfusion", "download-free-repo"]
 
 - name: install rpmfusion free repo
   package:
     name: "{{ ansible_pkgs_dir }}/rpmfusion-free-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
     state: present
-  tags: ["rpmfusion", "install-free-repo"]
 
 - name: download rpmfusion non-free repo
   get_url:
     url: "http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     dest: "{{ ansible_pkgs_dir }}/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
-  tags: ["rpmfusion", "download-non-free-repo"]
 
 - name: install rpmfusion non-free repo
   package:
     name: "{{ ansible_pkgs_dir }}/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
     state: present
-  tags: ["rpmfusion", "download-non-free-repo"]

@@ -7,4 +7,3 @@
     - ruby
     - rubygems
     - ruby-devel
-  tags: ["ruby", "install-ruby-pkgs"]

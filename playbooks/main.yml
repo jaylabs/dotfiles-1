@@ -2,25 +2,40 @@
 - connection: local
   hosts: 127.0.0.1
   become: True
-  vars_files:
-    - ../vars/main.yml
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+    running_user_id: "{{ ansible_user_id }}"
+    running_user_dir: "{{ ansible_user_dir }}"
+    ansible_pkgs_dir: "{{ running_user_dir }}/.tmp/pkgs"
+
+  pre_tasks:
+   - name: create temporary packages dir
+     file:
+       path: "{{ ansible_pkgs_dir }}"
+       state: directory
+
+  post_tasks:
+   - name: delete temporary packages dir
+     file:
+       path: "{{ ansible_pkgs_dir }}"
+       state: absent
 
   roles:
-    - pre
-    - git
+    - bootstrap
+    - chrome
     - cli_tools
-    - zsh
+    - docker
+    - dropbox
+    - file-agent
+    - forticlient
+    - k8s-tools
     - nodejs
     - python
     - ruby
-    - vscode
-    - docker
-    - dropbox
-    - vagrant
-    - graphics
-    - chrome
-    - forticlient
-    - file-agent
+    - setup-git
     - terraform
-    - k8s-tools
+    - vagrant
     - virtualbox
+    - vscode
+    - zsh

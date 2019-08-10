@@ -8,19 +8,17 @@
     validate_certs: no
   register: _download_vagrant
   until: _download_vagrant is succeeded
-  tags: ["vagrant", "download-vagrant"]
 
 - name: install vagrant
   package:
     name: "{{ ansible_pkgs_dir }}/{{ vagrant_pkg }}"
     state: present
-  tags: ["vagrant", "install-vagrant"]
 
 - name: install vagrant prereqs
   package:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - libvirt
     - libxslt-devel
     - libxml2-devel
@@ -28,59 +26,50 @@
     - libguestfs-tools-c
     - ruby-devel
     - qemu
-  tags: ["vagrant", "install-libvirt"]
 
 - name: install vagrant plugins
   shell: "CONFIGURE_ARGS='with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib' vagrant plugin install {{ item }}"
-  with_items:
+  loop:
     - sahara
     - vagrant-scp
     - vagrant-mutate
     - vagrant-libvirt
-  tags: ["vagrant", "install-libvirt-plugin"]
 
 - name: copy virt-rules
   copy:
     src: virt.rules
     dest: /etc/polkit-1/rules.d/10-virt.rules
     mode: 0644
-  tags: ["vagrant", "copy-virt-rules"]
 
 - name: allow user access to libvirt
   user:
     name: "{{ running_user_id }}"
     groups: libvirt
     append: True
-  tags: ["vagrant", "allow-libvirt-user"]
 
 - name: create default directory to vagrant
   file:
     path: /home/{{ lookup('env', 'USER') }}/vagrant/{{ item }}
     state: directory
-  with_items:
+  loop:
     - public
     - playbooks
-  tags: ["vagrant", "vagrant-create-dir"]
 
-- name: copy vagrantfile
+- name: copy files
   copy:
-    src: Vagrantfile
-    dest: /home/{{ lookup('env', 'USER') }}/vagrant/Vagrantfile
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     mode: 0644
-  tags: ["vagrant", "copy-vagrantfile"]
-
-- name: copy vagrantfile
-  copy:
-    src: main.yml
-    dest: /home/{{ lookup('env', 'USER') }}/vagrant/playbooks/main.yml
-    mode: 0644
-  tags: ["vagrant", "copy-playbook-file"]
+  loop:
+    - src: Vagrantfile
+      dest: /home/{{ lookup('env', 'USER') }}/vagrant/Vagrantfile
+    - src: main.yml
+      dest: /home/{{ lookup('env', 'USER') }}/vagrant/playbooks/main.yml
 
 - name: install nfs tools
   package:
     name: nfs-utils
     state: present
-  tags: ["vagrant", "nfs"]
 
 - name: setup nfsd
   lineinfile:
@@ -88,7 +77,6 @@
     line: 'udp=y'
     insertbefore: '^#[nfsd]'
     firstmatch: true
-  tags: ["vagrant", "setup-nfs"]
 
 - name: ensure systemd nfs-server is enabled on boot and start service
   systemd:
@@ -96,7 +84,6 @@
     name: nfs-server
     enabled: true
     state: started
-  tags: ["vagrant", "nfs"]
 
 - name: allow nfs services in firewall
   firewalld:
@@ -104,11 +91,10 @@
     immediate: yes
     state: enabled
     service: "{{ item }}"
-  with_items:
+  loop:
     - nfs
     - rpc-bind
     - mountd
-  tags: ["vagrant", "nfs"]
 
 - name: open nfs ports in firewall
   firewalld:
@@ -116,7 +102,6 @@
     immediate: yes
     state: enabled
     port: "{{ item }}"
-  with_items:
+  loop:
     - "1025-65535/tcp"
     - "1025-65535/udp"
-  tags: ["vagrant", "nfs"]

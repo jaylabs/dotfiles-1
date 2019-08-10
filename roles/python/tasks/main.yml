@@ -3,12 +3,11 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - python-pip
     - python3-pip
     - python-virtualenv
     - python3-invoke
-  tags: ["python", "install-python"]
 
 - name: install python2 packages
   pip:
@@ -16,7 +15,6 @@
     extra_args: "--user"
     name: "legit"
     state: latest
-  tags: ["python", "install-pip2-pkgs"]
 
 - name: install python3 packages
   pip:
@@ -24,7 +22,7 @@
     extra_args: "--user"
     name: "{{ item }}"
     state: latest
-  with_items:
+  loop:
     - jedi
     - flake8
     - autopep8
@@ -34,4 +32,3 @@
     - pytest-flake8
     - pytest-isort
     - pytest-hidecaptured
-  tags: ["python", "install-pip3-pkgs"]

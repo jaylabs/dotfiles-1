@@ -3,40 +3,39 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - awscli
     - caddy
-    - openssh
-    - tree
-    - nmap
-    - telnet
-    - tcpdump
-    - traceroute
+    - ctags
+    - fzf
+    - htop
+    - httpie
+    - iftop
     - mtr
     - nc
-    - iftop
-    - trafshow
     - ncdu
-    - htop
+    - nmap
+    - openssh
     - screen
-    - tmux
     - siege
-    - ctags
+    - tcpdump
+    - telnet
+    - terminator
+    - the_silver_searcher
+    - tilix
+    - tmux
+    - traceroute
+    - trafshow
+    - tree
     - unrar
     - youtube-dl
-    - the_silver_searcher
     - Zim
-    - terminator
-    - tilix
-    - fzf
-  tags: ["cli_tools"]
 
 - name: install root editorconfig file
   copy:
     src: editorconfig
     dest: "{{ running_user_dir }}/.editorconfig"
     mode: 0644
-  tags: ["cli_tools"]
 
 - name: add azure cli repositoriy
   yum_repository:
@@ -47,10 +46,8 @@
     baseurl: https://packages.microsoft.com/yumrepos/azure-cli
     gpgcheck: True
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
-  tags: ["cli_tools", "azure-cli"]
 
 - name: install azure cli package
   package:
     name: azure-cli
     state: present
-  tags: ["cli_tools", "azure-cli"]

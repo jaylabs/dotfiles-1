@@ -1,16 +1,13 @@
 ---
 - name: install kernel devel
   package:
-    name: "kernel-devel"
+    name: kernel-devel
     state: present
-  tags: ["virtualbox", "install-kernel-devel"]
 
 - name: install virtualbox package
   package:
     name: "https://download.virtualbox.org/virtualbox/6.0.0/VirtualBox-6.0-6.0.0_127566_fedora29-1.x86_64.rpm"
     state: present
-  tags: ["virtualbox", "install-virtualbox"]
 
 - name: set up vbox config
   command: "/sbin/vboxconfig"
-  tags: ["virtualbox", "setup-vboxconfig"]

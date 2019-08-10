@@ -1,14 +1,12 @@
 ---
 - name: install zsh
   package:
-    name: "zsh"
+    name: zsh
     state: present
   register: install-zsh
-  tags: ["zsh", "install-zsh"]
 
 - name: configure zsh to major shell
   command: "usermod --shell /usr/bin/zsh $USER"
-  tags: ["zsh", "install-zsh"]
 
 - name: Download antibody
   action: get_url
@@ -18,7 +16,6 @@
     checksum: "sha256:{{ antibody_checksum }}"
   register: _download_antibody
   until: _download_antibody is succeeded
-  tags: ["zsh", "download-antibody"]
 
 - name: unarchive antibody package
   unarchive:
@@ -28,48 +25,43 @@
     creates: "{{ running_user_dir }}/bin/antibody"
     extra_opts:
       - "antibody"
-  tags: ["zsh", "unarchive-antibody"]
 
 - name: set up antibody executable permissions
   file:
     path: "{{ running_user_dir }}/bin/antibody"
     mode: 0755
-  tags: ["zsh", "antibody-permissions"]
 
 - name: clean old zsh files
   file:
     state: absent
     path: "{{ running_user_dir }}/.{{ item }}"
-  with_items:
+  loop:
     - zlogin
     - zlogout
     - zpreztorc
     - zprofile
     - zshenv
     - zprezto
-  tags: ["zsh", "cleanup-old-zsh"]
 
 - name: create zsh config dirs
   file:
     state: directory
     path: "{{ running_user_dir }}/.{{ item }}"
-  with_items:
+  loop:
     - zsh
     - zkbd
-  tags: ["zsh", "create-zshconfig-dir"]
 
 - name: install main zsh config file
   copy:
-    src: "zshrc"
+    src: zshrc
     dest: "{{ running_user_dir }}/.zshrc"
     mode: 0644
-  tags: ["zsh", "install-zshconfig"]
 
 - name: install zsh config files
   copy:
     src: "{{ item }}"
     dest: "{{ running_user_dir }}/.zsh/{{ item }}"
-  with_items:
+  loop:
     - custom.zsh
     - completion.zsh
     - config.zsh
@@ -88,16 +80,14 @@
     - ansible.zsh
     - kubectl.zsh
     - vagrant.zsh
-  tags: ["zsh", "copy-zshconfig-files"]
 
 - name: install zkbd config files
   copy:
     src: "{{ item.src }}"
     dest: "{{ running_user_dir }}/.zkbd/{{ item.dst }}"
     mode: 0644
-  with_items:
+  loop:
     - src: zkbd.screen-256color
       dst: screen-256color-:0
     - src: zkbd.xterm-256color
       dst: xterm-256color-:0
-  tags: ["zsh", "copy-zkbdconfig-files"]

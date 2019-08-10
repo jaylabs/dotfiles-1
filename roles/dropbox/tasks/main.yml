@@ -6,10 +6,8 @@
     owner: root
     group: root
     mode: 0644
-  tags: ["dropbox", "configure-dropbox-repo"]
 
 - name: install dropbox
   package:
-    name: "dropbox"
+    name: dropbox
     state: present
-  tags: ["dropbox", "install-dropbox"]

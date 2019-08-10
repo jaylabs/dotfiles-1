@@ -1,6 +1,0 @@
----
-- name: install golang packages
-  package:
-    name: "golang"
-    state: present
-  tags: ["golang", "install-golang"]

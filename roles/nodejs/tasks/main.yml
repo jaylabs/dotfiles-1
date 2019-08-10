@@ -6,7 +6,6 @@
     owner: root
     group: root
     mode: 0644
-  tags: ["nodejs", "configure-yarn-repo"]
 
 - name: install nodejs
   package:
@@ -16,20 +15,17 @@
     - nodejs
     - npm
     - yarn
-  tags: ["nodejs", "install-nodejs-pkgs"]
 
 - name: create user global npm packages dir
   file:
     path: "{{ running_user_dir }}/.npm-packages"
     state: directory
-  tags: ["nodejs", "npm-pkg-dir"]
 
 - name: install npm config file
   copy:
     src: npmrc
     dest: "{{ running_user_dir }}/.npmrc"
     mode: 0644
-  tags: ["nodejs", "copy-npm-config"]
 
 - name: install node packages
   npm:
@@ -50,4 +46,3 @@
     - babel-preset-es2015
     - gulp
     - tldr
-  tags: ["nodejs", "install-node-pkgs"]
