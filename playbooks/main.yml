@@ -1,10 +1,9 @@
 ---
-- connection: local
-  hosts: 127.0.0.1
-  become: True
+- hosts: localhost
+  become: true
   vars:
     ansible_connection: local
-    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+    ansible_python_interpreter: "/usr/bin/python3"
     running_user_id: "{{ ansible_user_id }}"
     running_user_dir: "{{ ansible_user_dir }}"
     ansible_pkgs_dir: "{{ running_user_dir }}/.tmp/pkgs"
