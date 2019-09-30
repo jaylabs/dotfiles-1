@@ -1,5 +1,6 @@
 ---
 - name: install cli packages
+  become: true
   package:
     name: "{{ item }}"
     state: present
@@ -48,6 +49,7 @@
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
 
 - name: install azure cli package
+  become: true
   package:
     name: azure-cli
     state: present

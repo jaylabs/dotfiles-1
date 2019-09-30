@@ -8,6 +8,7 @@
     mode: 0644
 
 - name: install forticlient
+  become: true
   package:
     name: "{{ item }}"
     state: present

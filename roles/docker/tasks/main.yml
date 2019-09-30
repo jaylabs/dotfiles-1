@@ -1,5 +1,6 @@
 ---
 - name: configure docker repo
+  become: true
   copy:
     src: docker.repo
     dest: /etc/yum.repos.d/docker.repo
@@ -8,6 +9,7 @@
     mode: 0644
 
 - name: remove old docker packages
+  become: true
   package:
     name: "{{ item }}"
     state: absent
@@ -25,6 +27,7 @@
     state: absent
 
 - name: remove docker
+  become: true
   package:
     name: docker
     state: absent

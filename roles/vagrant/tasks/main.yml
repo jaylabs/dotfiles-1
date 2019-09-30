@@ -10,11 +10,13 @@
   until: _download_vagrant is succeeded
 
 - name: install vagrant
+  become: true
   package:
     name: "{{ ansible_pkgs_dir }}/{{ vagrant_pkg }}"
     state: present
 
 - name: install vagrant prereqs
+  become: true
   package:
     name: "{{ item }}"
     state: present
@@ -67,11 +69,13 @@
       dest: /home/{{ lookup('env', 'USER') }}/vagrant/playbooks/main.yml
 
 - name: install nfs tools
+  become: true
   package:
     name: nfs-utils
     state: present
 
 - name: setup nfsd
+  become: true
   lineinfile:
     path: /etc/nfsd.conf
     line: 'udp=y'
@@ -79,6 +83,7 @@
     firstmatch: true
 
 - name: ensure systemd nfs-server is enabled on boot and start service
+  become: true
   systemd:
     daemon_reload: true
     name: nfs-server
@@ -86,6 +91,7 @@
     state: started
 
 - name: allow nfs services in firewall
+  become: true
   firewalld:
     permanent: yes
     immediate: yes
@@ -97,6 +103,7 @@
     - mountd
 
 - name: open nfs ports in firewall
+  become: true
   firewalld:
     permanent: yes
     immediate: yes

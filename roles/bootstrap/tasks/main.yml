@@ -1,14 +1,17 @@
 ---
 - name: upgrade all packages
+  become: true
   package:
     name: "*"
     state: latest
+  when: upgrade
 
 - name: install packages
+  become: true
   package:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - autoconf
     - bluez-libs-devel
     - bzip2
@@ -64,6 +67,7 @@
     - zlib-devel
 
 - name: set up selinux to permissive
+  become: true
   selinux:
     policy: targeted
     state: permissive
@@ -80,6 +84,7 @@
     dest: "{{ ansible_pkgs_dir }}/rpmfusion-free-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
 
 - name: install rpmfusion free repo
+  become: true
   package:
     name: "{{ ansible_pkgs_dir }}/rpmfusion-free-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
     state: present
@@ -90,6 +95,7 @@
     dest: "{{ ansible_pkgs_dir }}/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
 
 - name: install rpmfusion non-free repo
+  become: true
   package:
     name: "{{ ansible_pkgs_dir }}/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-2.noarch.rpm"
     state: present

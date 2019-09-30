@@ -1,5 +1,6 @@
 ---
 - name: install python packages
+  become: true
   package:
     name: "{{ item }}"
     state: present

@@ -1,5 +1,6 @@
 ---
 - name: install dependencies
+  become: true
   package:
     name: "{{ item }}"
     state: present
@@ -71,7 +72,6 @@
   args:
     chdir: "{{ file_agent_install_dir }}"
     creates: "{{ file_agent_install_dir }}/cdfa"
-  become: false
 
 - name: copy shortcut in launcher
   template:

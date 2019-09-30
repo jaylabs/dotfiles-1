@@ -8,10 +8,11 @@
     mode: 0644
 
 - name: install nodejs
+  become: true
   package:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - nodejs
     - npm
     - yarn
@@ -31,7 +32,7 @@
   npm:
     global: yes
     name: "{{ item }}"
-  with_items:
+  loop:
     - tern
     - eslint
     - remark-lint
