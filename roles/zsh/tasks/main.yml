@@ -1,5 +1,6 @@
 ---
 - name: install zsh
+  become_user: root
   package:
     name: zsh
     state: present
@@ -23,8 +24,7 @@
     src: "{{ ansible_pkgs_dir }}/antibody-{{ antibody_version }}.tar.gz"
     dest: "{{ running_user_dir }}/bin"
     creates: "{{ running_user_dir }}/bin/antibody"
-    extra_opts:
-      - "antibody"
+    extra_opts: antibody
 
 - name: set up antibody executable permissions
   file:
