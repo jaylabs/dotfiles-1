@@ -22,7 +22,7 @@
     vpn_ip_address: "{{ lookup('env','VPN_IP_ADDRESS') }}"
     vpn_username: "{{ lookup('env','USER') }}"
     vpn_cert: "{{ lookup('env','VPN_CERT') }}"
-  when: install_forticlient is True
+  when: install_forticlient
 
 - name: copy azure vpn setting
   template:
@@ -31,7 +31,7 @@
     owner: root
     group: root
     mode: 0400
-    force: True
+    force: true
   when:
     - vpn_cert | length > 0
     - vpn_ip_address | length > 0
