@@ -19,8 +19,8 @@
 - name: create opt directory file-agent
   file:
     path: "{{ file_agent_install_dir }}"
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     state: directory
 
 - name: check file-agent package exist
@@ -47,24 +47,24 @@
 - name: define permissions
   file:
     path: "{{ file_agent_install_dir }}/FAInstall.jar"
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     mode: 0775
 
 - name: copy file-agent settings
   template:
     src: "installer.properties.j2"
     dest: "{{ file_agent_install_dir }}/installer.properties"
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     mode: 0644
 
 - name: copy file-agent script install
   template:
     src: "install.sh.j2"
     dest: "{{ file_agent_install_dir }}/install.sh"
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     mode: 0775
 
 - name: install file_agent silent mode
@@ -76,7 +76,7 @@
 - name: copy shortcut in launcher
   template:
     src: "file-agent.desktop.j2"
-    dest: "/home/{{ username }}/.local/share/applications/file-agent.desktop"
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    dest: "{{ running_user_dir }}/.local/share/applications/file-agent.desktop"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     mode: 0644
