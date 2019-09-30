@@ -8,6 +8,7 @@
     mode: 0644
 
 - name: install google-chrome
+  become: true
   package:
     name: google-chrome
     state: present
