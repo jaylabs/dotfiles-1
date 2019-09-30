@@ -38,12 +38,14 @@
     - vagrant-libvirt
 
 - name: copy virt-rules
+  become: true
   copy:
     src: virt.rules
     dest: /etc/polkit-1/rules.d/10-virt.rules
     mode: 0644
 
 - name: allow user access to libvirt
+  become: true
   user:
     name: "{{ running_user_id }}"
     groups: libvirt
@@ -62,6 +64,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: 0644
+    force: true
   loop:
     - src: Vagrantfile
       dest: /home/{{ lookup('env', 'USER') }}/vagrant/Vagrantfile
