@@ -33,6 +33,7 @@
     mode: 0400
     force: true
   when:
+    - install_forticlient
     - vpn_cert | length > 0
     - vpn_ip_address | length > 0
     - vpn_username | length > 0
