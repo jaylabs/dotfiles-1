@@ -8,6 +8,7 @@
     mode: 0644
 
 - name: install dropbox
+  become: true
   package:
     name: dropbox
     state: present
