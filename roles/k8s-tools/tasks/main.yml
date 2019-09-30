@@ -9,6 +9,7 @@
     force: True
 
 - name: install kubectl tool
+  become: true
   package:
     name: kubectl
     state: present
