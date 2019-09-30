@@ -1,6 +1,6 @@
 ---
 - name: install zsh
-  become: root
+  become: true
   package:
     name: zsh
     state: present
