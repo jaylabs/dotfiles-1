@@ -5,6 +5,7 @@ export VISUAL='vim'
 export PAGER='less'
 
 autoload -U colors; colors
+source ~/.zsh/kubectl.zsh
 export RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
 
 # load antibody plugins
