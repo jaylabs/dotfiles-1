@@ -1,5 +1,5 @@
 init:
-	./script/bootstrap
+	./init.sh
 .PHONY: init
 
 .DEFAULT_GOAL := init
