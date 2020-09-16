@@ -1,5 +1,0 @@
----
-file_agent_url: https://www.dropbox.com/s/kgbdt9ys9kknh1a/FAInstall.zip?raw=1
-file_agent_package: FAInstall.zip
-file_agent_checksum: 18ad2e1455f658804c69850bd41fec08ad34b6a4daf0dd82ab8ef9508765db16
-file_agent_install_dir: /opt/file-agent

@@ -1,11 +1,3 @@
-# My Dotfiles
+# Dotfiles
 
-To initialize my dotfiles you have to execute bootstrap script:
-
-`make bootstrap`
-
-Run playbook:
-
-`make run`
-
-Operation system: `Fedora`
+Using dotfiles for everyday needs based on brew tool.

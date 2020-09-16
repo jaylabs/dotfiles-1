@@ -1,8 +1,0 @@
----
-ctop_version: 0.7.2
-ctop_download_url: https://github.com/bcicen/ctop/releases/download/v{{ ctop_version }}/ctop-{{ ctop_version }}-linux-amd64
-ctop_checksum: e1af73e06f03caf0c59ac488c1cda97348871f6bb47772c31bbd314ddc494383.
-
-docker_compose_version: 1.24.1
-docker_compose_download_url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
-docker_compose_checksum: cfb3439956216b1248308141f7193776fcf4b9c9b49cbbe2fb07885678e2bb8a.

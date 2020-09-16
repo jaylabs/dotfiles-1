@@ -1,10 +1,5 @@
-.SILENT: bootstrap
-.PHONY: bootstrap
-bootstrap:
+init:
 	./script/bootstrap
-	pipenv shell
+.PHONY: init
 
-.SILENT: run
-.PHONY: run
-run:
-	pipenv run ansible-playbook playbooks/main.yml
+.DEFAULT_GOAL := init

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-antibody bundle TBSliver/zsh-theme-steeef
-antibody bundle zsh-users/zsh-completions
-
-# **MUST** be the last plugins
-antibody bundle zsh-users/zsh-autosuggestions
-antibody bundle zsh-users/zsh-syntax-highlighting
-antibody bundle zsh-users/zsh-history-substring-search
