@@ -5,4 +5,4 @@ set -e
 RUN=$(which brew)
 
 xargs ${RUN} install < brew-list
-xargs ${RUN} install < brew-list-cask
+xargs ${RUN} cask install < brew-list-cask
