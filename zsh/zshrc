@@ -10,7 +10,10 @@ export RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
 
 # load antibody plugins
 source <(antibody init)
-source ~/.zsh/plugins
+source $HOME/.zsh/plugins
+
+# git scripts
+export PATH="$PATH:$HOME/.git"
 
 typeset -U config_files
 config_files=($HOME/.zsh/*.zsh)
@@ -33,15 +36,15 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Asdf settings
-source /Users/ruanarcega/.asdf/asdf.sh
+source $HOME/.asdf/asdf.sh
 
 # Java settings
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # $ git clone https://github.com/bash-my-aws/bash-my-aws.git ~/.bash-my-aws
-source ~/.bash-my-aws/bash_completion.sh
+source $HOME/.bash-my-aws/bash_completion.sh
 export PATH="$PATH:$HOME/.bash-my-aws/bin"
-source ~/.bash-my-aws/aliases
+source $HOME/.bash-my-aws/aliases
 
 autoload -U +X bashcompinit && bashcompinit
