@@ -1,0 +1,47 @@
+#!/bin/zsh
+
+export EDITOR='vim'
+export VISUAL='vim'
+export PAGER='less'
+
+autoload -U colors; colors
+source ~/.zsh/kubectl.zsh
+export RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
+
+# load antibody plugins
+source <(antibody init)
+source ~/.zsh/plugins
+
+typeset -U config_files
+config_files=($HOME/.zsh/*.zsh)
+
+# load the path files
+for file in ${config_files[@]}; do
+  source "$file"
+done
+
+autoload -Uz compinit
+typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
+if [ $(date +'%j') != $updated_at ]; then
+  compinit -i
+else
+  compinit -C -i
+fi
+
+# Locale settings
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# Asdf settings
+source /Users/ruanarcega/.asdf/asdf.sh
+
+# Java settings
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# $ git clone https://github.com/bash-my-aws/bash-my-aws.git ~/.bash-my-aws
+source ~/.bash-my-aws/bash_completion.sh
+export PATH="$PATH:$HOME/.bash-my-aws/bin"
+source ~/.bash-my-aws/aliases
+
+autoload -U +X bashcompinit && bashcompinit
