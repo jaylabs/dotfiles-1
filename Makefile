@@ -1,5 +1,9 @@
 init:
-	./init.sh
+	./bootstrap.sh
 .PHONY: init
 
-.DEFAULT_GOAL := init
+bundle:
+	brew bundle
+.PHONY: bundle
+
+.DEFAULT_GOAL := bundle
