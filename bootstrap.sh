@@ -30,5 +30,7 @@ cp -R zsh/*-256color $HOME/.zkbd
 echo "~> git\n"
 mkdir -p $HOME/.git
 cp -R git/* $HOME/.git
+cp -R git/gitconfig $HOME/.gitconfig
+cp -R git/gitconfig.lib $HOME/.gitconfig.lib
 
 exit 0
