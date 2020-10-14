@@ -6,8 +6,8 @@ bundle:
 	brew bundle
 .PHONY: bundle
 
-brew-dump:
+dump:
 	brew bundle dump --force
-.PHONY: brew-dump
+.PHONY: dump
 
 .DEFAULT_GOAL := bundle
