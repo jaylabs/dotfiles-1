@@ -24,6 +24,9 @@ mkdir -p $HOME/.zsh
 cp -R zsh/*.zsh $HOME/.zsh/
 cp -R zsh/zshrc $HOME/.zshrc
 
+mkdir -p $HOME/.zkbd
+cp -R zsh/*-256color $HOME/.zkbd
+
 echo "~> git\n"
 mkdir -p $HOME/.git
 cp -R git/* $HOME/.git
