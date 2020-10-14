@@ -2,7 +2,7 @@
 
 if test ! $(which brew)
 then
-  echo "  Installing Homebrew for you."
+  echo "~> Installing Homebrew for you\n"
 
   # Install the correct homebrew for each OS type
   if test "$(uname)" = "Darwin"
@@ -16,5 +16,16 @@ then
 fi
 
 brew tap Homebrew/bundle
+
+echo "~> setting up tools\n"
+
+echo "~> zsh\n"
+mkdir -p $HOME/.zsh
+cp -R zsh/*.zsh $HOME/.zsh/
+cp -R zsh/zshrc $HOME/.zshrc
+
+echo "~> git\n"
+mkdir -p $HOME/.git
+cp -R git/* $HOME/.git
 
 exit 0
