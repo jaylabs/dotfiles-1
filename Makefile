@@ -10,4 +10,8 @@ dump:
 	brew bundle dump --force
 .PHONY: dump
 
+update:
+	brew update
+.PHONY: update
+
 .DEFAULT_GOAL := bundle
