@@ -85,7 +85,7 @@ brew "ruby"
 brew "shellcheck"
 brew "shfmt"
 brew "stern"
-brew "telnet", link: false
+brew "telnet"
 brew "terminal-notifier", link: false
 brew "terraform"
 brew "terraform-docs"
