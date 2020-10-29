@@ -22,7 +22,7 @@ brew "coreutils"
 brew "asdf"
 brew "aws-iam-authenticator"
 brew "awscli"
-brew "python@3.8"
+brew "python@3.8", link: true
 brew "azure-cli"
 brew "base64"
 brew "bash"
