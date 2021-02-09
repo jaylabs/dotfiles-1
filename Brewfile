@@ -68,7 +68,7 @@ brew "kubernetes-cli"
 brew "kops"
 brew "kube-ps1"
 brew "kubectx"
-brew "libpq"
+brew "libpq", link: true
 brew "localstack"
 brew "mingw-w64"
 brew "mkcert"
